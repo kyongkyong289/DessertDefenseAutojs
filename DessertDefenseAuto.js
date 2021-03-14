@@ -39,6 +39,22 @@ window.onerror = onError;
 function onMouseClick(event) {
     sysVars.mouseClickX = event.clientX - canvasRect.left;
     sysVars.mouseClickY = event.clientY - canvasRect.top;
+
+    buttonHandle();
+}
+
+function buttonHandle() {
+    if (gameVars.scene === 'titlePage') {
+        gameVars.scene = 'levelSelect';
+    }
+}
+
+function isInsideRect(x, y, rectLeft, rectTop, rectWidth, rectHeight) {
+    if (x > rectLeft && x < rectLeft + rectWidth && y > rectTop && y < rectTop + rectHeight) {
+        return true;
+    }
+
+    return false;
 }
 
 //Display
