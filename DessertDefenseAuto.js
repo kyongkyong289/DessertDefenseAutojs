@@ -11,6 +11,22 @@ var sysVars = {
 
 var gameVars = {
     scene : 'titlePage',
+    selectedLevel : -1,
+};
+
+var playerHero = {
+    ID : -1,
+    skills : [-1],
+    life : 0,
+    gold : 0,
+    sugar : 0,
+};
+
+var shop = {
+    itemList : [-1, -1, -1, -1, -1, -1, -1, -1],
+    level : 1,
+    rerollCost : 2,
+    upgradeCost : [[6, 6], [8, 8], [10, 10], [12, 12]],
 };
 
 //Start, Update, Error
@@ -46,6 +62,11 @@ function onMouseClick(event) {
 function buttonHandle() {
     if (gameVars.scene === 'titlePage') {
         gameVars.scene = 'levelSelect';
+    } else if (gameVars.scene === 'levelSelect') {
+        if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.levelSelectPage.levels[0][1], gameUI.levelSelectPage.levels[0][2], gameUI.levelSelectPage.levelButtonSize[0], gameUI.levelSelectPage.levelButtonSize[1])) {
+            gameVars.selectedLevel = 0;
+            gameVars.scene = 'readyPage';
+        }
     }
 }
 
@@ -63,6 +84,8 @@ function display() {
 
     if (gameVars.scene === 'titlePage') {
         displayTitlePage();
+    } else if (gameVars.scene === 'levelSelect') {
+        displayLevelSelectPage();
     }
 }
 
@@ -75,4 +98,11 @@ function displayTitlePage() {
     context.font = 'bold 72px sans-serif';
 
     context.fillText(`Dessert Defense`, gameUI.titlePage.titleTextBox[0], gameUI.titlePage.titleTextBox[1]);    
+}
+
+function displayLevelSelectPage() {
+    context.fillStyle = 'black';
+    
+    context.strokeRect(gameUI.levelSelectPage.levels[0][1], gameUI.levelSelectPage.levels[0][2], gameUI.levelSelectPage.levelButtonSize[0], gameUI.levelSelectPage.levelButtonSize[1]);
+
 }
