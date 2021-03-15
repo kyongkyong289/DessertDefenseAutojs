@@ -24,6 +24,8 @@ var playerHero = {
 
 var shop = {
     itemList : [-1, -1, -1, -1, -1, -1, -1, -1],
+    numOfItems : 4,
+    selectedItem : -1,
     level : 1,
     rerollCost : 2,
     upgradeCost : [[6, 6], [8, 8], [10, 10], [12, 12]],
