@@ -12,6 +12,7 @@ var sysVars = {
 var gameVars = {
     scene : 'titlePage',
     selectedLevel : -1,
+    temp : 0,
 };
 
 var playerHero = {
@@ -69,6 +70,13 @@ function buttonHandle() {
             gameVars.selectedLevel = 0;
             gameVars.scene = 'readyPage';
         }
+    } else if (gameVars.scene === 'readyPage') {
+        for (var i = 0; i < 4; i++) {
+            if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.readyPage.heroSkills[i][1], gameUI.readyPage.heroSkills[i][2], gameUI.readyPage.heroSkillSize[0], gameUI.readyPage.heroSkillSize[1])) {
+                playerHero.skills[0] = i;
+                gameVars.scene = 'mainGame';
+            }
+        }
     }
 }
 
@@ -88,6 +96,10 @@ function display() {
         displayTitlePage();
     } else if (gameVars.scene === 'levelSelect') {
         displayLevelSelectPage();
+    } else if (gameVars.scene === 'readyPage') {
+        displayReadyPage();
+    } else if (gameVars.scene === 'mainGame') {
+        displayMainGame();
     }
 }
 
@@ -103,8 +115,66 @@ function displayTitlePage() {
 }
 
 function displayLevelSelectPage() {
-    context.fillStyle = 'black';
+    context.strokeStyle = 'black';
+    context.lineWidth = 2;
     
     context.strokeRect(gameUI.levelSelectPage.levels[0][1], gameUI.levelSelectPage.levels[0][2], gameUI.levelSelectPage.levelButtonSize[0], gameUI.levelSelectPage.levelButtonSize[1]);
+}
 
+function displayReadyPage() {
+    context.strokeSytle = 'black';
+    context.fillStyle = 'black';
+    context.font = 'bold 48px sans-serif';
+    context.lineWidth = 2;
+
+    context.fillText('Select Your Skill', gameUI.readyPage.selectText[0], gameUI.readyPage.selectText[1]);
+
+    for (var i = 0; i < 4; i++) {
+        context.strokeRect(gameUI.readyPage.heroSkills[i][1], gameUI.readyPage.heroSkills[i][2], gameUI.readyPage.heroSkillSize[0], gameUI.readyPage.heroSkillSize[1]);
+    }
+}
+
+function displayMainGame() {
+    displayShop();
+}
+
+function displayShop() {
+    context.strokeStyle = 'black';
+    context.fillStyle = 'black';
+    context.font = 'bold 24px sans-serif';
+    context.lineWidth = 2;
+
+    context.strokeRect(gameUI.mainGame.shopArea[0], gameUI.mainGame.shopArea[1], gameUI.mainGame.shopArea[2], gameUI.mainGame.shopArea[3]);
+    context.strokeRect(gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3]);
+    context.strokeRect(gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3]);
+    context.strokeRect(gameUI.mainGame.upgradeButton[0], gameUI.mainGame.upgradeButton[1], gameUI.mainGame.upgradeButton[2], gameUI.mainGame.upgradeButton[3]);
+    context.strokeRect(gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.shopArea[3]);
+    context.strokeRect(gameUI.mainGame.descriptionArea[0], gameUI.mainGame.descriptionArea[1], gameUI.mainGame.descriptionArea[2], gameUI.mainGame.descriptionArea[3]);
+}
+
+
+
+//Physics
+
+//Game Logic
+function selectN(numberOfElements, n) {
+    var pool = [];
+    var results = [];
+    var selectIndex = 0;
+
+    for (var i = 0; i < n; i++) {
+        pool.push(i);
+    }
+
+    if (numberOfElements <= n) {
+        return pool;
+    }
+
+    for (var i = 0; i < n; i++) {
+        selectIndex = Math.floor(Math.random() * pool.length);
+        results.push(pool[selectIndex]);
+        pool.splice(selectIndex, 1); 
+    }
+
+    return results;
 }
