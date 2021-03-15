@@ -12,6 +12,7 @@ var sysVars = {
 var gameVars = {
     scene : 'titlePage',
     selectedLevel : -1,
+    wave : 0,
     temp : 0,
 };
 
@@ -19,15 +20,19 @@ var playerHero = {
     ID : -1,
     skills : [-1],
     life : 0,
-    gold : 0,
+    gold : 6,
+    goldGen : [6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
     sugar : 0,
+    maxSugar : 3,
 };
 
 var shop = {
+    itemPool : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     itemList : [-1, -1, -1, -1, -1, -1, -1, -1],
     numOfItems : 4,
     selectedItem : -1,
     level : 1,
+    exp : 0,
     rerollCost : 2,
     upgradeCost : [[6, 6], [8, 8], [10, 10], [12, 12]],
 };
@@ -75,6 +80,7 @@ function buttonHandle() {
             if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.readyPage.heroSkills[i][1], gameUI.readyPage.heroSkills[i][2], gameUI.readyPage.heroSkillSize[0], gameUI.readyPage.heroSkillSize[1])) {
                 playerHero.skills[0] = i;
                 gameVars.scene = 'mainGame';
+                reroll();
             }
         }
     }
@@ -136,6 +142,7 @@ function displayReadyPage() {
 
 function displayMainGame() {
     displayShop();
+    displayDescription();
 }
 
 function displayShop() {
@@ -148,10 +155,29 @@ function displayShop() {
     context.strokeRect(gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3]);
     context.strokeRect(gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3]);
     context.strokeRect(gameUI.mainGame.upgradeButton[0], gameUI.mainGame.upgradeButton[1], gameUI.mainGame.upgradeButton[2], gameUI.mainGame.upgradeButton[3]);
-    context.strokeRect(gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.shopArea[3]);
-    context.strokeRect(gameUI.mainGame.descriptionArea[0], gameUI.mainGame.descriptionArea[1], gameUI.mainGame.descriptionArea[2], gameUI.mainGame.descriptionArea[3]);
+    context.strokeRect(gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.lockButton[3]);
+    context.strokeRect(gameUI.mainGame.goldIcon[0], gameUI.mainGame.goldIcon[1], gameUI.mainGame.goldIcon[2], gameUI.mainGame.goldIcon[3]);
+    context.strokeRect(gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
+    context.strokeRect(gameUI.mainGame.levelIcon[0], gameUI.mainGame.levelIcon[1], gameUI.mainGame.levelIcon[2], gameUI.mainGame.levelIcon[3]);
+    context.strokeRect(gameUI.mainGame.expIcon[0], gameUI.mainGame.expIcon[1], gameUI.mainGame.expIcon[2], gameUI.mainGame.expIcon[3]);
+
+    context.fillText(`${playerHero.gold}`, gameUI.mainGame.goldText[0], gameUI.mainGame.goldText[1]);
+    context.fillText(`${playerHero.sugar}/${playerHero.maxSugar}`, gameUI.mainGame.sugarText[0], gameUI.mainGame.sugarText[1]);
+    context.fillText(`${shop.level}`, gameUI.mainGame.levelText[0], gameUI.mainGame.levelText[1]);
+
+	context.fillStyle = 'turquoise';
+    
+    if (shop.exp >= 1) {
+		context.fillRect(gameUI.mainGame.expBar[0][0], gameUI.mainGame.expBar[0][1], gameUI.mainGame.expBar[0][2], gameUI.mainGame.expBar[0][3]);
+	}
+    
+    context.strokeRect(gameUI.mainGame.expBar[0][0], gameUI.mainGame.expBar[0][1], gameUI.mainGame.expBar[0][2], gameUI.mainGame.expBar[0][3]);
+    context.strokeRect(gameUI.mainGame.expBar[1][0], gameUI.mainGame.expBar[1][1], gameUI.mainGame.expBar[1][2], gameUI.mainGame.expBar[1][3]);
 }
 
+function displayDescription() {
+    context.strokeRect(gameUI.mainGame.descriptionArea[0], gameUI.mainGame.descriptionArea[1], gameUI.mainGame.descriptionArea[2], gameUI.mainGame.descriptionArea[3]);
+}
 
 
 //Physics
@@ -177,4 +203,13 @@ function selectN(numberOfElements, n) {
     }
 
     return results;
+}
+
+function reroll() {
+    var index = -1;
+
+    for (var i = 0; i < shop.numOfItems; i++) {
+        index = Math.floor(Math.random() * shop.itemPool.length);
+        shop.itemList[i] = shop.itemPool[index];
+    }
 }
