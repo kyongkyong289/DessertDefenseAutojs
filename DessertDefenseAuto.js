@@ -13,6 +13,7 @@ var gameVars = {
     scene : 'titlePage',
     selectedLevel : -1,
     wave : 0,
+    maxWave : 20,
     temp : 0,
 };
 
@@ -155,6 +156,8 @@ function displayShop() {
     context.font = 'bold 24px sans-serif';
     context.lineWidth = 2;
 
+    context.strokeRect(gameUI.backButton[0], gameUI.backButton[1], gameUI.backButton[2], gameUI.backButton[3]);
+
     context.strokeRect(gameUI.mainGame.shopArea[0], gameUI.mainGame.shopArea[1], gameUI.mainGame.shopArea[2], gameUI.mainGame.shopArea[3]);
     context.strokeRect(gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3]);
     context.strokeRect(gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3]);
@@ -212,8 +215,14 @@ function displayBar() {
 
     context.strokeRect(gameUI.mainGame.lifeIcon[0], gameUI.mainGame.lifeIcon[1], gameUI.mainGame.lifeIcon[2], gameUI.mainGame.lifeIcon[3]);
     context.strokeRect(gameUI.mainGame.waveIcon[0], gameUI.mainGame.waveIcon[1], gameUI.mainGame.waveIcon[2], gameUI.mainGame.waveIcon[3]);
+    context.strokeRect(gameUI.mainGame.startButton[0], gameUI.mainGame.startButton[1], gameUI.mainGame.startButton[2], gameUI.mainGame.startButton[3]); 
+
+    context.drawImage(images.lifeImage, gameUI.mainGame.lifeIcon[0], gameUI.mainGame.lifeIcon[1], gameUI.mainGame.lifeIcon[2], gameUI.mainGame.lifeIcon[3]); 
+    context.drawImage(images.flagImage, gameUI.mainGame.waveIcon[0], gameUI.mainGame.waveIcon[1], gameUI.mainGame.waveIcon[2], gameUI.mainGame.waveIcon[3]);
+    context.drawImage(images.flagImage, gameUI.mainGame.startButton[0], gameUI.mainGame.startButton[1], gameUI.mainGame.startButton[2], gameUI.mainGame.startButton[3]); 
     
     context.fillText(`${playerHero.life}/${playerHero.maxLife}`, gameUI.mainGame.lifeText[0], gameUI.mainGame.lifeText[1]);
+    context.fillText(`${gameVars.wave}/${gameVars.maxWave}`, gameUI.mainGame.waveText[0], gameUI.mainGame.waveText[1]);
 }
 
 //Physics

@@ -1,6 +1,8 @@
 var gameUI = {
     fullImage : [0, 0],
 
+    backButton : [20, 40, 80, 80],
+
     titlePage : {
         titleTextBox : [300, 100],
         startTextBox : [300, 600],
@@ -42,7 +44,8 @@ var gameUI = {
                      [1160, 620, 80, 80]],
         lifeIcon : [20, 160, 40, 40],
         lifeText : [68, 188],
-        waveIcon : [220, 160, 40, 40],
-        waveText : [268, 188],
+        waveIcon : [20, 208, 40, 40],
+        waveText : [68, 236],
+        startButton : [20, 256, 80, 80],
     },
 };
