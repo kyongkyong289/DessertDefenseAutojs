@@ -19,7 +19,8 @@ var gameVars = {
 var playerHero = {
     ID : -1,
     skills : [-1],
-    life : 0,
+    life : 40,
+    maxLife : 40,
     gold : 6,
     goldGen : [6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
     sugar : 0,
@@ -28,7 +29,7 @@ var playerHero = {
 
 var shop = {
     itemPool : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    itemList : [-1, -1, -1, -1, -1, -1, -1, -1],
+    itemList : [-1, -1, -1, -1, -1, -1, -1],
     numOfItems : 4,
     selectedItem : -1,
     level : 1,
@@ -43,6 +44,7 @@ function start() {
     context = canvas.getContext('2d');
     canvasRect = canvas.getBoundingClientRect();
 
+    imageLoad();
     canvas.addEventListener('click', onMouseClick, false);
 
     setInterval(update, 40);
@@ -143,6 +145,8 @@ function displayReadyPage() {
 function displayMainGame() {
     displayShop();
     displayDescription();
+    displayArtifact();
+    displayBar();
 }
 
 function displayShop() {
@@ -161,6 +165,11 @@ function displayShop() {
     context.strokeRect(gameUI.mainGame.levelIcon[0], gameUI.mainGame.levelIcon[1], gameUI.mainGame.levelIcon[2], gameUI.mainGame.levelIcon[3]);
     context.strokeRect(gameUI.mainGame.expIcon[0], gameUI.mainGame.expIcon[1], gameUI.mainGame.expIcon[2], gameUI.mainGame.expIcon[3]);
 
+    context.drawImage(images.goldImage, gameUI.mainGame.goldIcon[0], gameUI.mainGame.goldIcon[1], gameUI.mainGame.goldIcon[2], gameUI.mainGame.goldIcon[3]);
+    context.drawImage(images.sugarImage, gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
+
+    context.fillText(`Lv`, gameUI.mainGame.levelText2[0], gameUI.mainGame.levelText2[1]);
+    context.fillText(`XP`, gameUI.mainGame.expText[0], gameUI.mainGame.expText[1]);
     context.fillText(`${playerHero.gold}`, gameUI.mainGame.goldText[0], gameUI.mainGame.goldText[1]);
     context.fillText(`${playerHero.sugar}/${playerHero.maxSugar}`, gameUI.mainGame.sugarText[0], gameUI.mainGame.sugarText[1]);
     context.fillText(`${shop.level}`, gameUI.mainGame.levelText[0], gameUI.mainGame.levelText[1]);
@@ -176,9 +185,36 @@ function displayShop() {
 }
 
 function displayDescription() {
+    context.strokeStyle = 'black';
+    context.fillStyle = 'black';
+    context.font = 'bold 24px sans-serif';
+    context.lineWidth = 2;
+
     context.strokeRect(gameUI.mainGame.descriptionArea[0], gameUI.mainGame.descriptionArea[1], gameUI.mainGame.descriptionArea[2], gameUI.mainGame.descriptionArea[3]);
 }
 
+function displayArtifact() {
+    context.strokeStyle = 'black';
+    context.fillStyle = 'black';
+    context.font = 'bold 24px sans-serif';
+    context.lineWidth = 2;
+
+    for (var i = 0; i < 3; i++) {
+        context.strokeRect(gameUI.mainGame.artifacts[i][0], gameUI.mainGame.artifacts[i][1], gameUI.mainGame.artifacts[i][2], gameUI.mainGame.artifacts[i][3]);
+    }
+}
+
+function displayBar() {
+    context.strokeStyle = 'black';
+    context.fillStyle = 'black';
+    context.font = 'bold 24px sans-serif';
+    context.lineWidth = 2;
+
+    context.strokeRect(gameUI.mainGame.lifeIcon[0], gameUI.mainGame.lifeIcon[1], gameUI.mainGame.lifeIcon[2], gameUI.mainGame.lifeIcon[3]);
+    context.strokeRect(gameUI.mainGame.waveIcon[0], gameUI.mainGame.waveIcon[1], gameUI.mainGame.waveIcon[2], gameUI.mainGame.waveIcon[3]);
+    
+    context.fillText(`${playerHero.life}/${playerHero.maxLife}`, gameUI.mainGame.lifeText[0], gameUI.mainGame.lifeText[1]);
+}
 
 //Physics
 
