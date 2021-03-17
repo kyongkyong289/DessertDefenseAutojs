@@ -35,8 +35,10 @@ var shop = {
     selectedItem : -1,
     level : 1,
     exp : 0,
+    locked : false,
     rerollCost : 2,
-    upgradeCost : [[6, 6], [8, 8], [10, 10], [12, 12]],
+    lockCost : 0,
+    upgradeCost : [[0, 0], [6, 6], [8, 8], [10, 10], [12, 12]],
 };
 
 //Start, Update, Error
@@ -170,12 +172,28 @@ function displayShop() {
 
     context.drawImage(images.goldImage, gameUI.mainGame.goldIcon[0], gameUI.mainGame.goldIcon[1], gameUI.mainGame.goldIcon[2], gameUI.mainGame.goldIcon[3]);
     context.drawImage(images.sugarImage, gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
+    context.drawImage(images.rerollButton, gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3]); 
+    context.drawImage(images.upgradeButton, gameUI.mainGame.upgradeButton[0], gameUI.mainGame.upgradeButton[1], gameUI.mainGame.upgradeButton[2], gameUI.mainGame.upgradeButton[3]);
+    context.drawImage(images.goldImage2, gameUI.mainGame.rerollCost[0], gameUI.mainGame.rerollCost[1], gameUI.mainGame.rerollCost[2], gameUI.mainGame.rerollCost[3]);
+    context.drawImage(images.goldImage2, gameUI.mainGame.upgradeCost[0], gameUI.mainGame.upgradeCost[1], gameUI.mainGame.upgradeCost[2], gameUI.mainGame.upgradeCost[3]);
+    context.drawImage(images.goldImage2, gameUI.mainGame.lockCost[0], gameUI.mainGame.lockCost[1], gameUI.mainGame.lockCost[2], gameUI.mainGame.lockCost[3]);
+
+
+    if (shop.locked === false) {
+        context.drawImage(images.unlockButton, gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.lockButton[3]); 
+    } else {
+        context.drawImage(images.lockButton, gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.lockButton[3]); 
+    }
 
     context.fillText(`Lv`, gameUI.mainGame.levelText2[0], gameUI.mainGame.levelText2[1]);
     context.fillText(`XP`, gameUI.mainGame.expText[0], gameUI.mainGame.expText[1]);
     context.fillText(`${playerHero.gold}`, gameUI.mainGame.goldText[0], gameUI.mainGame.goldText[1]);
     context.fillText(`${playerHero.sugar}/${playerHero.maxSugar}`, gameUI.mainGame.sugarText[0], gameUI.mainGame.sugarText[1]);
     context.fillText(`${shop.level}`, gameUI.mainGame.levelText[0], gameUI.mainGame.levelText[1]);
+
+    context.fillText(`${shop.upgradeCost[shop.level][shop.exp]}`, gameUI.mainGame.upgradeText[0], gameUI.mainGame.upgradeText[1]);
+    context.fillText(`${shop.rerollCost}`, gameUI.mainGame.rerollText[0], gameUI.mainGame.rerollText[1]);
+    context.fillText(`${shop.lockCost}`, gameUI.mainGame.lockText[0], gameUI.mainGame.lockText[1]);
 
 	context.fillStyle = 'turquoise';
     
