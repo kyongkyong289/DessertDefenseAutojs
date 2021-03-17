@@ -29,7 +29,7 @@ var playerHero = {
 };
 
 var shop = {
-    itemPool : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    itemPool : [0, 1],
     itemList : [-1, -1, -1, -1, -1, -1, -1],
     numOfItems : 4,
     selectedItem : -1,
@@ -86,6 +86,13 @@ function buttonHandle() {
                 playerHero.skills[0] = i;
                 gameVars.scene = 'mainGame';
                 gameInit();
+            }
+        }
+    } else if (gameVars.scene === 'mainGame') {
+        if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3]) {
+            if (playerHero.gold >= shop.rerollCost) {
+                playerHero.gold -= shop.rerollCost);
+                reroll();
             }
         }
     }
