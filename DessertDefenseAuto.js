@@ -95,6 +95,16 @@ function buttonHandle() {
                 playerHero.gold -= shop.rerollCost;
                 reroll();
             }
+        } else if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.upgradeButton[0], gameUI.mainGame.upgradeButton[1], gameUI.mainGame.upgradeButton[2], gameUI.mainGame.upgradeButton[3])) {
+            if (playerHero.gold >= shop.upgradeCost[shop.level][shop.exp] && shop.level < 5) {
+                playerHero.gold -= shop.upgradeCost[shop.level][shop.exp];
+                if (shop.exp === 0) {
+                    shop.exp += 1;
+                } else {
+                    shop.level += 1;
+                    shop.exp = 0;
+                }
+            }
         }
     }
 }
@@ -259,6 +269,17 @@ function displayBar() {
 
 //Game Logic
 function gameInit() {
+    playerHero.gold = 60;
+    playerHero.suger = 0;
+    playerHero.maxSugar = 3;
+    playerHero.life = 30;
+    playerHero.maxLife = 30;
+    shop.level = 1;
+    shop.exp = 0;
+    shop.rerollCost = 2;
+    shop.lockCost = 0;
+    gameVars.wave = 0;
+    gameVars.maxWave = 15;
     reroll();
 }
 
