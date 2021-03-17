@@ -9,6 +9,12 @@ var images = {
     upgradeButton : new Image(),
     lockButton : new Image(),
     unlockButton : new Image(),
+
+    unitImages : [[0, new Image()],
+                  [1, new Image()],
+                  [2, new Image()],
+                  [3, new Image()]],
+    unitsOnBoard : new Image(),
 };
 
 function imageLoad() {
@@ -22,4 +28,7 @@ function imageLoad() {
     images.upgradeButton.src = 'Images/UpgradeButton.png';
     images.lockButton.src = 'Images/LockButton.png';
     images.unlockButton.src = 'Images/UnlockButton.png';
+
+    images.unitImages[0][1].src = 'Images/Unit01.png';
+    images.unitImages[1][1].src = 'Images/Unit02.png';
 }

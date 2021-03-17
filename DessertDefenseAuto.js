@@ -24,6 +24,7 @@ var playerHero = {
     maxLife : 40,
     gold : 6,
     goldGen : [6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
+    hand : [-1, -1, -1, -1, -1, -1, -1, -1],
     sugar : 0,
     maxSugar : 3,
 };
@@ -89,9 +90,9 @@ function buttonHandle() {
             }
         }
     } else if (gameVars.scene === 'mainGame') {
-        if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3]) {
+        if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.rerollButton[0], gameUI.mainGame.rerollButton[1], gameUI.mainGame.rerollButton[2], gameUI.mainGame.rerollButton[3])) {
             if (playerHero.gold >= shop.rerollCost) {
-                playerHero.gold -= shop.rerollCost);
+                playerHero.gold -= shop.rerollCost;
                 reroll();
             }
         }
@@ -176,6 +177,7 @@ function displayShop() {
     context.strokeRect(gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
     context.strokeRect(gameUI.mainGame.levelIcon[0], gameUI.mainGame.levelIcon[1], gameUI.mainGame.levelIcon[2], gameUI.mainGame.levelIcon[3]);
     context.strokeRect(gameUI.mainGame.expIcon[0], gameUI.mainGame.expIcon[1], gameUI.mainGame.expIcon[2], gameUI.mainGame.expIcon[3]);
+    context.strokeRect(gameUI.mainGame.playerHand[0], gameUI.mainGame.playerHand[1], gameUI.mainGame.playerHand[2], gameUI.mainGame.playerHand[3]);
 
     context.drawImage(images.goldImage, gameUI.mainGame.goldIcon[0], gameUI.mainGame.goldIcon[1], gameUI.mainGame.goldIcon[2], gameUI.mainGame.goldIcon[3]);
     context.drawImage(images.sugarImage, gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
@@ -185,6 +187,9 @@ function displayShop() {
     context.drawImage(images.goldImage2, gameUI.mainGame.upgradeCost[0], gameUI.mainGame.upgradeCost[1], gameUI.mainGame.upgradeCost[2], gameUI.mainGame.upgradeCost[3]);
     context.drawImage(images.goldImage2, gameUI.mainGame.lockCost[0], gameUI.mainGame.lockCost[1], gameUI.mainGame.lockCost[2], gameUI.mainGame.lockCost[3]);
 
+    for (var i = 0; i < shop.numOfItems; i++) {
+        context.drawImage(images.unitImages[shop.itemList[i]][1], gameUI.mainGame.shopItemList[0] + gameUI.mainGame.shopItemSize[0] * i, gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemSize[0], gameUI.mainGame.shopItemSize[1]);
+    }
 
     if (shop.locked === false) {
         context.drawImage(images.unlockButton, gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.lockButton[3]); 
