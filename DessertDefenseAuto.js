@@ -85,7 +85,7 @@ function buttonHandle() {
             if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.readyPage.heroSkills[i][1], gameUI.readyPage.heroSkills[i][2], gameUI.readyPage.heroSkillSize[0], gameUI.readyPage.heroSkillSize[1])) {
                 playerHero.skills[0] = i;
                 gameVars.scene = 'mainGame';
-                reroll();
+                gameInit();
             }
         }
     }
@@ -246,6 +246,10 @@ function displayBar() {
 //Physics
 
 //Game Logic
+function gameInit() {
+    reroll();
+}
+
 function selectN(numberOfElements, n) {
     var pool = [];
     var results = [];
