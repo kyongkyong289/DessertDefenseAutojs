@@ -15,6 +15,7 @@ var gameVars = {
     wave : 0,
     maxWave : 20,
     temp : 0,
+    map : [],
 };
 
 var playerHero = {
@@ -105,6 +106,18 @@ function buttonHandle() {
                     shop.exp = 0;
                 }
             }
+        } else if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.lockButton[0], gameUI.mainGame.lockButton[1], gameUI.mainGame.lockButton[2], gameUI.mainGame.lockButton[3])) {
+            if (playerHero.gold >= shop.lockCost) {
+                playerHero.gold -= shop.lockCost;
+
+                if (shop.locked === true) {
+                    shop.locked = false;
+                } else {
+                    shop.locked = true;
+                }
+            }
+        } else if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3]) {
+            shop.selectedItem = Math.floor((sysVars.mouseClickX - gameUI.mainGame.shopItemList[0]) / gameUI.mainGame.shopItemSize[0]);
         }
     }
 }
@@ -168,6 +181,7 @@ function displayMainGame() {
     displayDescription();
     displayArtifact();
     displayBar();
+    displayBoard();
 }
 
 function displayShop() {
@@ -265,6 +279,17 @@ function displayBar() {
     context.fillText(`${gameVars.wave}/${gameVars.maxWave}`, gameUI.mainGame.waveText[0], gameUI.mainGame.waveText[1]);
 }
 
+function displayBoard() {
+    for (var i = 0; i < mapData.levels[0][1].length; i++) {
+        for (var j = 0; j < mapData.levels[0][1][0].length; j++) {
+            if (mapData.levels[0][1][i][j] === 1) {
+                context.drawImage(images.terrains.grass[0][1], gameUI.mainGame.boardStart[0] + gameUI.mainGame.cellSize[0] * j, gameUI.mainGame.boardStart[1] + gameUI.mainGame.cellSize[1] * i, gameUI.mainGame.cellSize[0], gameUI.mainGame.cellSize[1]);
+            } else {
+                context.drawImage(images.terrains.dirt[0][1], gameUI.mainGame.boardStart[0] + gameUI.mainGame.cellSize[0] * j, gameUI.mainGame.boardStart[1] + gameUI.mainGame.cellSize[1] * i, gameUI.mainGame.cellSize[0], gameUI.mainGame.cellSize[1]);
+            }
+        }
+    }
+}
 //Physics
 
 //Game Logic

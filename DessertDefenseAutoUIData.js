@@ -45,15 +45,20 @@ var gameUI = {
         lockButton : [1160, 40, 80, 80],
         lockText : [1168, 64],
         lockCost : [1160, 40, 32, 32],
+
         descriptionArea : [960, 160, 280, 440],
         artifacts : [[960, 620, 80, 80],
                      [1060, 620, 80, 80],
                      [1160, 620, 80, 80]],
+
         lifeIcon : [680, 620, 32, 32],
         lifeText : [720, 644],
         waveIcon : [680, 668, 32, 32],
         waveText : [720, 692],
         startButton : [800, 620, 80, 80],
         playerHand : [20, 620, 640, 80],
+
+        boardStart : [100, 160],
+        cellSize : [64, 64],
     },
 };

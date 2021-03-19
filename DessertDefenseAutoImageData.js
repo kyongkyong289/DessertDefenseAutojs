@@ -5,6 +5,7 @@ var images = {
     sugarImage : new Image(),
     flagImage : new Image(),
 
+    selectFrame : new Image(),
     rerollButton : new Image(),
     upgradeButton : new Image(),
     lockButton : new Image(),
@@ -15,6 +16,14 @@ var images = {
                   [2, new Image()],
                   [3, new Image()]],
     unitsOnBoard : new Image(),
+
+    terrains : {
+        grass : [[0, new Image()],
+                 [1, new Image()]],
+
+        dirt : [[0, new Image()],
+                [1, new Image()]],
+    },
 };
 
 function imageLoad() {
@@ -24,6 +33,7 @@ function imageLoad() {
     images.sugarImage.src = 'Images/SugarImage.png';
     images.flagImage.src = 'Images/FlagImage.png';
 
+    images.selectFrame.src = 'Images/SelectFrame.png';
     images.rerollButton.src = 'Images/RerollButton.png';
     images.upgradeButton.src = 'Images/UpgradeButton.png';
     images.lockButton.src = 'Images/LockButton.png';
@@ -31,4 +41,8 @@ function imageLoad() {
 
     images.unitImages[0][1].src = 'Images/Unit01.png';
     images.unitImages[1][1].src = 'Images/Unit02.png';
+
+    images.terrains.grass[0][1].src = 'Images/TerrainGrass01.png';
+    
+    images.terrains.dirt[0][1].src = 'Images/TerrainDirt01.png';
 }
