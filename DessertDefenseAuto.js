@@ -16,6 +16,8 @@ var gameVars = {
     maxWave : 20,
     temp : 0,
     map : [],
+    shopClicked : false,
+    handClicked : false,
 };
 
 var playerHero = {
@@ -35,6 +37,7 @@ var shop = {
     itemList : [-1, -1, -1, -1, -1, -1, -1],
     numOfItems : 4,
     selectedItem : -1,
+    selectedTarget : -1,
     level : 1,
     exp : 0,
     locked : false,
@@ -116,8 +119,13 @@ function buttonHandle() {
                     shop.locked = true;
                 }
             }
-        } else if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3]) {
+        } else if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3])) {
             shop.selectedItem = Math.floor((sysVars.mouseClickX - gameUI.mainGame.shopItemList[0]) / gameUI.mainGame.shopItemSize[0]);
+
+            if (gameVars.shopClicked === false) {
+                gameVars.shopClicked = true;
+                shop.selectedTarget = shop.selectedItem;
+            }
         }
     }
 }
@@ -213,6 +221,10 @@ function displayShop() {
 
     for (var i = 0; i < shop.numOfItems; i++) {
         context.drawImage(images.unitImages[shop.itemList[i]][1], gameUI.mainGame.shopItemList[0] + gameUI.mainGame.shopItemSize[0] * i, gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemSize[0], gameUI.mainGame.shopItemSize[1]);
+    }
+
+    if (gameVars.shopClicked === true) {
+        context.drawImage(images.selectFrame, gameUI.mainGame.shopItemList[0] + gameUI.mainGame.shopItemSize[0] * shop.selectedTarget, gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemSize[0], gameUI.mainGame.shopItemSize[1]);
     }
 
     if (shop.locked === false) {
