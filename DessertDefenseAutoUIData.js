@@ -57,6 +57,7 @@ var gameUI = {
         waveText : [720, 692],
         startButton : [800, 620, 80, 80],
         playerHand : [20, 620, 640, 80],
+        playerItemSize : [80, 80],
 
         boardStart : [100, 160],
         cellSize : [64, 64],

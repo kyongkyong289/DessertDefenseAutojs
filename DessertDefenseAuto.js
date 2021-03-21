@@ -17,7 +17,9 @@ var gameVars = {
     temp : 0,
     map : [],
     shopClicked : false,
+    shopAreaClickedFlag : false,
     handClicked : false,
+    handClickedFlag :false,
 };
 
 var playerHero = {
@@ -122,10 +124,24 @@ function buttonHandle() {
         } else if (isInsideRect(sysVars.mouseClickX, sysVars.mouseClickY, gameUI.mainGame.shopItemList[0], gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemList[2], gameUI.mainGame.shopItemList[3])) {
             shop.selectedItem = Math.floor((sysVars.mouseClickX - gameUI.mainGame.shopItemList[0]) / gameUI.mainGame.shopItemSize[0]);
 
-            if (gameVars.shopClicked === false) {
-                gameVars.shopClicked = true;
-                shop.selectedTarget = shop.selectedItem;
+            if (shop.itemList[shop.selectedItem] !== -1) {
+                if (gameVars.shopClicked === true && shop.selectedItem === shop.selectedTarget && playerHero.gold >= 3 && isHandFilled() === false) {
+                    playerHero.gold -= 3;
+                    handFill(shop.itemList[shop.selectedItem]);
+                    shop.itemList[shop.selectedItem] = -1;
+                    gameVars.shopClicked = false;
+                } else {
+                    gameVars.shopClicked = true;
+                    gameVars.shopClickedFlag = true;
+                    shop.selectedTarget = shop.selectedItem;
+                }
             }
+        }
+
+        if (gameVars.shopClickedFlag === true) {
+            gameVars.shopClickedFlag = false;
+        } else {
+            gameVars.shopClicked = false;
         }
     }
 }
@@ -209,7 +225,6 @@ function displayShop() {
     context.strokeRect(gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
     context.strokeRect(gameUI.mainGame.levelIcon[0], gameUI.mainGame.levelIcon[1], gameUI.mainGame.levelIcon[2], gameUI.mainGame.levelIcon[3]);
     context.strokeRect(gameUI.mainGame.expIcon[0], gameUI.mainGame.expIcon[1], gameUI.mainGame.expIcon[2], gameUI.mainGame.expIcon[3]);
-    context.strokeRect(gameUI.mainGame.playerHand[0], gameUI.mainGame.playerHand[1], gameUI.mainGame.playerHand[2], gameUI.mainGame.playerHand[3]);
 
     context.drawImage(images.goldImage, gameUI.mainGame.goldIcon[0], gameUI.mainGame.goldIcon[1], gameUI.mainGame.goldIcon[2], gameUI.mainGame.goldIcon[3]);
     context.drawImage(images.sugarImage, gameUI.mainGame.sugarIcon[0], gameUI.mainGame.sugarIcon[1], gameUI.mainGame.sugarIcon[2], gameUI.mainGame.sugarIcon[3]);
@@ -220,7 +235,9 @@ function displayShop() {
     context.drawImage(images.goldImage2, gameUI.mainGame.lockCost[0], gameUI.mainGame.lockCost[1], gameUI.mainGame.lockCost[2], gameUI.mainGame.lockCost[3]);
 
     for (var i = 0; i < shop.numOfItems; i++) {
-        context.drawImage(images.unitImages[shop.itemList[i]][1], gameUI.mainGame.shopItemList[0] + gameUI.mainGame.shopItemSize[0] * i, gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemSize[0], gameUI.mainGame.shopItemSize[1]);
+        if (shop.itemList[i] !== -1) {
+            context.drawImage(images.unitImages[shop.itemList[i]][1], gameUI.mainGame.shopItemList[0] + gameUI.mainGame.shopItemSize[0] * i, gameUI.mainGame.shopItemList[1], gameUI.mainGame.shopItemSize[0], gameUI.mainGame.shopItemSize[1]);
+        }
     }
 
     if (gameVars.shopClicked === true) {
@@ -282,10 +299,17 @@ function displayBar() {
     context.strokeRect(gameUI.mainGame.lifeIcon[0], gameUI.mainGame.lifeIcon[1], gameUI.mainGame.lifeIcon[2], gameUI.mainGame.lifeIcon[3]);
     context.strokeRect(gameUI.mainGame.waveIcon[0], gameUI.mainGame.waveIcon[1], gameUI.mainGame.waveIcon[2], gameUI.mainGame.waveIcon[3]);
     context.strokeRect(gameUI.mainGame.startButton[0], gameUI.mainGame.startButton[1], gameUI.mainGame.startButton[2], gameUI.mainGame.startButton[3]); 
+    context.strokeRect(gameUI.mainGame.playerHand[0], gameUI.mainGame.playerHand[1], gameUI.mainGame.playerHand[2], gameUI.mainGame.playerHand[3]);
 
     context.drawImage(images.lifeImage, gameUI.mainGame.lifeIcon[0], gameUI.mainGame.lifeIcon[1], gameUI.mainGame.lifeIcon[2], gameUI.mainGame.lifeIcon[3]); 
     context.drawImage(images.flagImage, gameUI.mainGame.waveIcon[0], gameUI.mainGame.waveIcon[1], gameUI.mainGame.waveIcon[2], gameUI.mainGame.waveIcon[3]);
-    context.drawImage(images.flagImage, gameUI.mainGame.startButton[0], gameUI.mainGame.startButton[1], gameUI.mainGame.startButton[2], gameUI.mainGame.startButton[3]); 
+    context.drawImage(images.flagImage, gameUI.mainGame.startButton[0], gameUI.mainGame.startButton[1], gameUI.mainGame.startButton[2], gameUI.mainGame.startButton[3]);
+
+    for (var i = 0; i < playerHero.hand.length; i++) {
+        if (playerHero.hand[i] !== -1) {
+            context.drawImage(images.unitImages[playerHero.hand[i]][1], gameUI.mainGame.playerHand[0] + gameUI.mainGame.playerItemSize[0] * i, gameUI.mainGame.playerHand[1], gameUI.mainGame.playerItemSize[0], gameUI.mainGame.playerItemSize[1]);
+        }
+    }
     
     context.fillText(`${playerHero.life}/${playerHero.maxLife}`, gameUI.mainGame.lifeText[0], gameUI.mainGame.lifeText[1]);
     context.fillText(`${gameVars.wave}/${gameVars.maxWave}`, gameUI.mainGame.waveText[0], gameUI.mainGame.waveText[1]);
@@ -340,6 +364,25 @@ function selectN(numberOfElements, n) {
     }
 
     return results;
+}
+
+function handFill(ID) {
+    for (var i = 0; i < playerHero.hand.length; i++) {
+        if (playerHero.hand[i] === -1) {
+            playerHero.hand[i] = ID;
+            break;
+        }
+    }
+}
+
+function isHandFilled() {
+    for (var i = 0; i < playerHero.hand.length; i++) {
+        if (playerHero.hand[i] === -1) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 function reroll() {
